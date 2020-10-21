@@ -59,7 +59,7 @@ switch ($HTTP_method) {
         $result = $control->whichTableInput($case);
     break;
     case 'DELETE':
-        $case = "update";
+        $case = "delete";
         $result = $control->whichTableInput($case);
     break;
 
