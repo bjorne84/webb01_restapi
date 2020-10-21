@@ -9,14 +9,14 @@ class CheckInputController extends PostModel
         /* If either of required fields are empty, error array with input-data and message. */
         if (empty($cData['Indata']['Education_ID']) || empty($cData['Indata']['CourseName'])) {
             http_response_code(400); //400 Bad Request
-            $errorMsg = ["Message" => "Education_ID and CourseName needs to set"];
+            $errorMsg = ["message" => "Education_ID and CourseName needs to set"];
             return $errorMsg;
             exit();
         }
         // ----- Contoll ID is numeric
         if (!is_numeric($cData['Indata']['Education_ID'])) {
             http_response_code(400); //400 Bad Request
-            $errorMsg = ["Message" => "ID måste skickas med och består endast av siffor!"];
+            $errorMsg = ["message" => "ID måste skickas med och består endast av siffor!"];
             return $errorMsg;
             exit();
         }
@@ -25,7 +25,7 @@ class CheckInputController extends PostModel
         // Course_Name max 100 characters
         if (mb_strlen($cData['Indata']['CourseName']) >= 99) {
             http_response_code(400); //400 Bad Request
-            $errorMsg = ["Message" => "CourseName can be max 100 characters"];
+            $errorMsg = ["message" => "CourseName can be max 100 characters"];
             return $errorMsg;
             exit();
         }
@@ -33,7 +33,7 @@ class CheckInputController extends PostModel
         // Points max 15 characters
         if (mb_strlen($cData['Indata']['Points']) >= 15) {
             http_response_code(400); //400 Bad Request
-            $errorMsg = ["Message" => "Points can be max 100 characters"];
+            $errorMsg = ["message" => "Points can be max 100 characters"];
             return $errorMsg;
             exit();
         }
@@ -41,7 +41,7 @@ class CheckInputController extends PostModel
         // Grade max 15 characters
         if (mb_strlen($cData['Indata']['Grade']) >= 5) {
             http_response_code(400); //400 Bad Request
-            $errorMsg = ["Message" => "Points can be max 5 characters"];
+            $errorMsg = ["message" => "Points can be max 5 characters"];
             return $errorMsg;
             exit();
         }

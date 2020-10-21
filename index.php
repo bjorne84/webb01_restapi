@@ -59,12 +59,8 @@ switch ($HTTP_method) {
         $result = $control->whichTableInput($case);
     break;
     case 'DELETE':
-        // respons-koder osv körs i deletepost
-        $result = $controlCourse->deletePost();
-        if($result) {
-            //var_dump($result);
-            echo json_encode($result, JSON_PRETTY_PRINT);
-        }
+        $case = "update";
+        $result = $control->whichTableInput($case);
     break;
 
     // $this->close();
