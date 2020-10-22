@@ -118,8 +118,10 @@ class PostModel extends Dbc
         if (!isset($cData['Indata']['Languages_id'])) {
             // Start updateJustCourse, if it works, return true else false
             if ($this->updateJustCourse($cData)) {
+                echo "true updatejust course";
                 return true;
             } else {
+                echo "false updatejust course";
                 return false;
             }
         } // If languages data is set 
@@ -153,15 +155,17 @@ class PostModel extends Dbc
     // method to update the course data and not languages
     protected function updateJustCourse($cData)
     {
+        //var_dump($cData);
         // Create variables
         $Course_ID = $cData['Id_push'];
         $Education_ID = $cData['Indata']['Education_ID'];
         $CourseName = $cData['Indata']['CourseName'];
         $Points = $cData['Indata']['Points'];
         $Grade = $cData['Indata']['Grade'];
+    
         // SQL QUERY with preperade statement for security
         $sql = "UPDATE courses
-        SET Education_ID = '?', CourseName = '?', Points = '?', Grade = '?'
+        SET Education_ID = ?, CourseName = ?, Points = ?, Grade = ?
         WHERE Course_ID = $Course_ID";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$Education_ID, $CourseName, $Points, $Grade]);
