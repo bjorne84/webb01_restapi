@@ -19,6 +19,7 @@ CREATE TABLE `work_experience` (
   `CV_ID` INT(11),
   `Workplace` VARCHAR(200) NOT NULL,
   `Titel` VARCHAR (100) NOT NULL,
+  `Description` TEXT, 
   `Startdate` DATE,
   `Enddate` DATE
 );

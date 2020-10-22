@@ -4,6 +4,7 @@ use FFI\CData;
 
 class PostController extends CheckInputController
 {
+    // GET HTTP-METHOD
     public function getDataFromTables($table, $id)
     {
         /* Sanitize input from*/
@@ -12,6 +13,8 @@ class PostController extends CheckInputController
         /* Make lowercase*/
         $table = strtolower($table);
         $id = strtolower($id);
+
+        // switch different table names
 
         // Starts different call-method to the database depending on input
         if ($id > 0 && $table === 'courses') {
@@ -22,15 +25,40 @@ class PostController extends CheckInputController
             $result = $this->getAllCourses();
             return $result;
             exit();
-        } else if (($table != 'courses') && ($table != "")) {
+        } else if (($table != 'courses') && ($table != "") && empty($id)) {
             /* Start method that get all the data for a specific table*/
             $result = $this->getAllData($table);
+            return $result;
+            exit();
+        } else if (($table != 'courses') && ($id != "")) {
+            // Shows data from a table by id
+            $id_type = $this->getId_type($table);
+            $result = $this->getAllDataById($table, $id_type, $id);
             return $result;
             exit();
         }
     }
 
-    /******* HTTP_METHOD POST **********/
+    // method to get id_type
+    protected function getId_type($table)
+    {
+        switch ($table) {
+            case 'portfolio':
+                return 'Portfolio_ID';
+                break;
+            case 'language':
+                return 'Language_ID';
+                break;
+            case 'work_experience':
+                return 'CV_ID';
+                break;
+            case 'education':
+                return 'Education_ID';
+                break;
+        }
+    }
+
+    /******* HTTP_METHOD POST, PUT AND DELETE **********/
 
     /* Controll wich table the input to send data to*/
     public function whichTableInput($case)
@@ -69,30 +97,17 @@ class PostController extends CheckInputController
                 return $result;
                 exit();
                 break;
+            case 'work_experience':
+                $result = $this->workExperience($cData, $case, $check);
+                return $result;
+                exit();
+                break;
 
-
-
-                /* Check if it´s a new post or update (true or false)
-        if($cData['New']) {
-            //$kursnamn = $cData['Indata']['Languages_id'][0];
-            $kursnamn = $cData['Indata']['Languages_id'];
-            foreach($kursnamn as $kurs) {
-                
-            }
-            http_response_code(200); // Fel på server
-            $result = ["message" => $kursnamn];
-            return $result;
-            exit();
-        } else {
-            http_response_code(503); // Fel på server
-            $result = ["message" => "En uppdatering."];
-            return $result;
-            exit();
-        }*/
         }
     }
 
-    protected function courses($cData, $case, $check) {
+    protected function courses($cData, $case, $check)
+    {
         // initiate class for the input controll of data to match what the database accept
         // Check if delete is set
         if ($case === "delete") {
@@ -165,36 +180,37 @@ class PostController extends CheckInputController
 
 
 
-    // method for
-    protected function portfolio($cData, $case, $check) {
+    // method for table: portfolio
+    protected function portfolio($cData, $case, $check)
+    {
         // initiate class for the input controll of data to match what the database accept
         // Check if delete is set
         if ($case === "delete") {
             // Create variables
-            $Course_ID = $cData['Id_push'];
+            $Portfolio_ID = $cData['Id_push'];
             $idType = $cData['Id_type'];
             $tableName = $cData['Table'];
             // Check if language-data exist and if so, then delete it
-            $bridge = $this->getBridgeById($Course_ID);
+            $bridge = $this->getBridgePortById($Portfolio_ID);
             if (!empty($bridge)) {
-                $this->deleteBridgeLanguage($Course_ID);
+                $this->deleteBridgeLanguage($Portfolio_ID);
             }
-            // Call method to delete the course
-            if ($this->deleteById($tableName, $idType, $Course_ID)) {
+            // Call method to delete the project
+            if ($this->deleteById($tableName, $idType, $Portfolio_ID)) {
                 http_response_code(200); // Succes OK 
-                $result = ["message" => "Success, Course deleted."];
+                $result = ["message" => "Success, project deleted in portfolio."];
                 return $result;
                 exit();
             } else {
                 http_response_code(500); // Internal Server Error
-                $result = ["message" => "Error, could not delete course from database."];
+                $result = ["message" => "Error, could not delete project in portfolio table from database."];
                 return $result;
                 exit();
             }
         } else if ($case === "new") {
             // If its new course to be added
             // Start method to controll the data
-            $cData = $check->controlCourse($cData);
+            $cData = $check->controlportfolio($cData);
             //Check if message exist, which means that errormessage was send from controlCourse
             if (array_key_exists('message', $cData)) {
                 $result = $cData['message'];
@@ -202,9 +218,9 @@ class PostController extends CheckInputController
                 exit();
             }
             // Method to set new course
-            if ($this->setCourse($cData)) {
+            if ($this->setPortfolio($cData)) {
                 http_response_code(201); // Created
-                $result = ["message" => "Succes, Course added."];
+                $result = ["message" => "Succes, portfolio project added."];
                 return $result;
                 exit();
             } else {
@@ -215,7 +231,7 @@ class PostController extends CheckInputController
             }
         } else if ($case === "update") {
             // Start method to controll the data
-            $cData = $check->controlCourse($cData);
+            $cData = $check->controlportfolio($cData);
             //Check if message exist, which means that errormessage was send from controlCourse
             if (array_key_exists('message', $cData)) {
                 $result = $cData['message'];
@@ -223,14 +239,83 @@ class PostController extends CheckInputController
                 exit();
             }
             //Method to update
-            if ($this->setUpdateCourse($cData)) {
+            if ($this->setUpdatePortfolio($cData)) {
                 http_response_code(201); // Created
-                $result = ["message" => "Success, Course updated."];
+                $result = ["message" => "Success, portfolio project updated."];
                 return $result;
                 exit();
             } else {
                 http_response_code(500); // Internal Server Error
-                $result = ["message" => "Error, could not add course in database."];
+                $result = ["message" => "Error, could not update portfolio project in database."];
+                return $result;
+                exit();
+            }
+        }
+    }
+
+    // method for table: work_experience
+    protected function workExperience($cData, $case, $check)
+    {
+        // initiate class for the input controll of data to match what the database accept
+        // Check if delete is set
+        if ($case === "delete") {
+            // Create variables
+            $CV_ID = $cData['Id_push'];
+            $tableName = $cData['Table'];
+            $id_type = $this->getId_type($tableName);
+         
+            // Call method to delete row
+            if ($this->deleteById($tableName, $id_type, $CV_ID)) {
+                http_response_code(200); // Succes OK 
+                $result = ["message" => "Success, work deleted in work_experience."];
+                return $result;
+                exit();
+            } else {
+                http_response_code(500); // Internal Server Error
+                $result = ["message" => "Error, could not delete work in work_experience table in the database."];
+                return $result;
+                exit();
+            }
+        } else if ($case === "new") {
+            // If its new course to be added
+            // Start method to controll the data
+            //$cData = $check->controlportfolio($cData);
+            //Check if message exist, which means that errormessage was send from controlCourse
+            if (array_key_exists('message', $cData)) {
+                $result = $cData['message'];
+                return $result;
+                exit();
+            }
+            // Method to set new course
+            if ($this->setWork($cData)) {
+                http_response_code(201); // Created
+                $result = ["message" => "Success, work added."];
+                return $result;
+                exit();
+            } else {
+                http_response_code(500); // Internal Server Error
+                $result = ["message" => "Error, could not add work in database."];
+                return $result;
+                exit();
+            }
+        } else if ($case === "update") {
+            // Start method to controll the data
+           // $cData = $check->controlportfolio($cData);
+            //Check if message exist, which means that errormessage was send from controlCourse
+            if (array_key_exists('message', $cData)) {
+                $result = $cData['message'];
+                return $result;
+                exit();
+            }
+            //Method to update
+            if ($this->updateWork($cData)) {
+                http_response_code(201); // Created
+                $result = ["message" => "Success, work_experience table updated."];
+                return $result;
+                exit();
+            } else {
+                http_response_code(500); // Internal Server Error
+                $result = ["message" => "Error, could not update work_experience table in database."];
                 return $result;
                 exit();
             }
