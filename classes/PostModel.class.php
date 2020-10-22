@@ -382,7 +382,6 @@ class PostModel extends Dbc
     protected function updateWork($cData)
     {
         // Create variables
-        var_dump($cData);
         $CV_ID = $cData['Id_push'];
         $Workplace = $cData['Indata']['Workplace'];
         $Titel = $cData['Indata']['Titel'];
@@ -397,4 +396,44 @@ class PostModel extends Dbc
         $stmt->execute([$Workplace, $Titel, $Description, $Startdate, $Enddate]);
         return true;
     }
+
+        /* **************************************************
+    ************* language ***************************
+    *****************************************************/
+
+    /* HTTP-METHOD DELETE
+    Using the deleteById() method called from PostController.class
+    */
+
+    // HTTP-METHOD POST 
+    //Set the work_experience table
+    protected function setLanguage($cData)
+    {
+        // Create variables
+        $Language = $cData['Indata']['Language'];
+        $Img_url = $cData['Indata']['Img_url'];
+        // SQL QUERY with preperade statement for security
+        $sql = "INSERT INTO language (Language, Img_url) VALUES(?, ?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$Language, $Img_url]);
+        return true;
+    }
+
+    // HTTP-METHOD PUT = update 
+    // update the work_experience table
+    protected function updateLanguage($cData)
+    {
+        // Create variables
+        $Language_ID = $cData['Id_push'];
+        $Language = $cData['Indata']['Language'];
+        $Img_url = $cData['Indata']['Img_url'];
+        // SQL QUERY with preperade statement for security
+        $sql = "UPDATE language
+               SET Language = ?, Img_url = ?
+               WHERE Language_ID = $Language_ID";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$Language, $Img_url]);
+        return true;
+    }
+
 }

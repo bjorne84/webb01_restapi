@@ -102,7 +102,11 @@ class PostController extends CheckInputController
                 return $result;
                 exit();
                 break;
-
+            case 'language':
+                $result = $this->language($cData, $case, $check);
+                return $result;
+                exit();
+                break;
         }
     }
 
@@ -263,7 +267,7 @@ class PostController extends CheckInputController
             $CV_ID = $cData['Id_push'];
             $tableName = $cData['Table'];
             $id_type = $this->getId_type($tableName);
-         
+
             // Call method to delete row
             if ($this->deleteById($tableName, $id_type, $CV_ID)) {
                 http_response_code(200); // Succes OK 
@@ -300,7 +304,7 @@ class PostController extends CheckInputController
             }
         } else if ($case === "update") {
             // Start method to controll the data
-           // $cData = $check->controlportfolio($cData);
+            // $cData = $check->controlportfolio($cData);
             //Check if message exist, which means that errormessage was send from controlCourse
             if (array_key_exists('message', $cData)) {
                 $result = $cData['message'];
@@ -316,6 +320,75 @@ class PostController extends CheckInputController
             } else {
                 http_response_code(500); // Internal Server Error
                 $result = ["message" => "Error, could not update work_experience table in database."];
+                return $result;
+                exit();
+            }
+        }
+    }
+
+    // method for table: language
+    protected function language($cData, $case, $check)
+    {
+        // initiate class for the input controll of data to match what the database accept
+        // Check if delete is set
+        if ($case === "delete") {
+            // Create variables
+            $Language_ID = $cData['Id_push'];
+            $tableName = $cData['Table'];
+            $id_type = $this->getId_type($tableName);
+
+            // Call method to delete row
+            if ($this->deleteById($tableName, $id_type, $Language_ID)) {
+                http_response_code(200); // Succes OK 
+                $result = ["message" => "Success, work deleted in language table."];
+                return $result;
+                exit();
+            } else {
+                http_response_code(500); // Internal Server Error
+                $result = ["message" => "Error, could not delete row in language table in the database."];
+                return $result;
+                exit();
+            }
+        } else if ($case === "new") {
+            // If its new course to be added
+            // Start method to controll the data
+            //$cData = $check->controlportfolio($cData);
+            //Check if message exist, which means that errormessage was send from controlCourse
+            if (array_key_exists('message', $cData)) {
+                $result = $cData['message'];
+                return $result;
+                exit();
+            }
+            // Method to set new course
+            if ($this->setLanguage($cData)) {
+                http_response_code(201); // Created
+                $result = ["message" => "Success, language data added."];
+                return $result;
+                exit();
+            } else {
+                http_response_code(500); // Internal Server Error
+                $result = ["message" => "Error, could not add language-data in database."];
+                return $result;
+                exit();
+            }
+        } else if ($case === "update") {
+            // Start method to controll the data
+            // $cData = $check->controlportfolio($cData);
+            //Check if message exist, which means that errormessage was send from controlCourse
+            if (array_key_exists('message', $cData)) {
+                $result = $cData['message'];
+                return $result;
+                exit();
+            }
+            //Method to update
+            if ($this->updateLanguage($cData)) {
+                http_response_code(201); // Created
+                $result = ["message" => "Success, language data updated."];
+                return $result;
+                exit();
+            } else {
+                http_response_code(500); // Internal Server Error
+                $result = ["message" => "Error, could not update language data."];
                 return $result;
                 exit();
             }
