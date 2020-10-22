@@ -45,7 +45,38 @@ class CheckInputController extends PostModel
             return $errorMsg;
             exit();
         }
-        
+
+        return $cData;
+    }
+
+    // Check the course table
+    protected function controlportfolio($cData)
+    {
+        /* If either of required fields are empty, returns error array with input-data and message. */
+        if (empty($cData['Indata']['Titel']) || empty($cData['Indata']['URL']) || empty($cData['Indata']['Description'])) {
+            http_response_code(400); //400 Bad Request
+            $errorMsg = ["message" => "Titel, URL and Description needs to set"];
+            return $errorMsg;
+            exit();
+        }
+
+        // ----- Controll lenght of input data --------
+        // Course_Name max 100 characters
+        if (mb_strlen($cData['Indata']['Titel']) >= 200) {
+            http_response_code(400); //400 Bad Request
+            $errorMsg = ["message" => "Titel can be max 200 characters"];
+            return $errorMsg;
+            exit();
+        }
+
+        // Points max 15 characters
+        if (mb_strlen($cData['Indata']['URL']) >= 150) {
+            http_response_code(400); //400 Bad Request
+            $errorMsg = ["message" => "URL can be max 150 characters"];
+            return $errorMsg;
+            exit();
+        }
+
         return $cData;
     }
 }

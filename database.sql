@@ -27,7 +27,7 @@ CREATE TABLE `portfolio` (
   `Portfolio_ID` INT(11),
   `Titel` VARCHAR(200) NOT NULL,
   `URL` VARCHAR(150) NOT NULL,
-  `Image_url` VARCHAR(200) ,
+  `Image_url` VARCHAR(200),
   `Description` TEXT NOT NULL
 );
 

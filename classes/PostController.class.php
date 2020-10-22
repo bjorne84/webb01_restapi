@@ -124,7 +124,9 @@ class PostController extends CheckInputController
                 }
                 //
                 break;
-        }
+                case 'portfolio':
+                    
+                break;    
 
         /* Check if it´s a new post or update (true or false)
         if($cData['New']) {
