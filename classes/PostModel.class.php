@@ -10,6 +10,33 @@ class PostModel extends Dbc
             exit();
         }
     }
+
+    // Gets the languages for a specific course 
+    protected function getLanguages($id)
+    {
+        $sql = "SELECT Language
+        FROM Bridge_language bi
+        JOIN Courses c ON c.Course_ID = bi.Course_ID
+        JOIN Language l ON l.Language_ID = bi.Language_ID
+            WHERE c.Course_ID = $id";
+        $result = $this->connect()->query($sql);
+        return $result->fetchAll();
+        exit();
+    }
+
+    // Gets all courses including education/scholl
+    protected function getCoursesAndEducation()
+    {
+        $sql = "SELECT courses.*,education.Programme, education.School
+	FROM courses 
+	JOIN education 
+		ON courses.Education_ID = education.Education_ID
+        ORDER BY Education_ID DESC, Course_ID";
+        $result = $this->connect()->query($sql);
+        return $result->fetchAll();
+        exit();
+    }
+
     // Gets all data from the table user chooses 
     protected function getAllData($table)
     {
@@ -397,7 +424,7 @@ class PostModel extends Dbc
         return true;
     }
 
-        /* **************************************************
+    /* **************************************************
     ************* language ***************************
     *****************************************************/
 
@@ -435,5 +462,4 @@ class PostModel extends Dbc
         $stmt->execute([$Language, $Img_url]);
         return true;
     }
-
 }

@@ -29,9 +29,19 @@ class PostController extends CheckInputController
             exit();
         } else if ($table === 'courses') {
             $result = $this->getAllCourses();
+            //$result = $this->nestedCourse();
             return $result;
             exit();
-        } else if (($table != 'courses') && ($table != "") && empty($id)) {
+        } else if ($table === 'courseslang'){
+            $result = $this->getLanguages($id);
+            return $result;
+            exit();
+        } else if($table === 'coursesand'){
+            $result = $this->getCoursesAndEducation();
+            return $result;
+            exit();            
+        }
+        else if (($table != 'courses') && ($table != "") && empty($id)) {
             /* Start method that get all the data for a specific table*/
             $result = $this->getAllData($table);
             return $result;
@@ -45,6 +55,22 @@ class PostController extends CheckInputController
         }
     }
 
+    // metod ej klar, tänkt att användas för att nästla en array i en assosiativ
+    protected function nestedCourse()
+    {
+        $courses = $this->getAllCourses();
+        //var_dump($courses);
+        $newArr = [];
+        foreach ($courses as $course) {
+            $idsend = $course['Course_ID'];
+            $languages = $this->getLanguages($idsend);
+            $merge = array_merge($course, $languages);
+            //  echo json_encode($merge, JSON_PRETTY_PRINT);
+            //return $merge;
+            //$newArr[$merge];
+            var_dump($merge);
+        }
+    }
     // method to get id_type
     protected function getId_type($table)
     {
