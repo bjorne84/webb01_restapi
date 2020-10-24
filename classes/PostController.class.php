@@ -14,7 +14,13 @@ class PostController extends CheckInputController
         $table = strtolower($table);
         $id = strtolower($id);
 
-        // switch different table names
+        // Check if table is set, otherwise send out errormessage
+        if ($table === "") {
+            http_response_code(400); // Bad request
+            $result = ["message" => "In the address bar you need to set tablename, like: https://webb01.se/restapi/?table=courses"];
+            return $result;
+            exit();
+        }
 
         // Starts different call-method to the database depending on input
         if ($id > 0 && $table === 'courses') {
@@ -54,6 +60,12 @@ class PostController extends CheckInputController
                 break;
             case 'education':
                 return 'Education_ID';
+                break;
+            case 'bridge_language':
+                return 'Course_ID';
+                break;
+            case 'bridge_portfolio_language':
+                return 'Portfolio_ID`';
                 break;
         }
     }
