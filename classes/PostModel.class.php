@@ -30,7 +30,7 @@ class PostModel extends Dbc
 
     protected function getAllDataById($table, $id_type, $id)
     {
-        // SQL fråga
+        // SQL frågagit
         $sql = "SELECT * FROM $table WHERE $id_type = $id";
         $result = $this->connect()->query($sql);
         return $result->fetchAll();
