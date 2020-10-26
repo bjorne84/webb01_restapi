@@ -14,11 +14,11 @@ class PostModel extends Dbc
     // Gets the languages for a specific course 
     protected function getLanguages($id)
     {
-        $sql = "SELECT Language
-        FROM Bridge_language bi
-        JOIN Courses c ON c.Course_ID = bi.Course_ID
-        JOIN Language l ON l.Language_ID = bi.Language_ID
-            WHERE c.Course_ID = $id";
+        $sql = "SELECT language.Language_ID, language.Language, language.Img_url
+        FROM language 
+        INNER JOIN bridge_language
+        ON bridge_language.Language_ID=language.Language_ID
+        WHERE bridge_language.Course_ID=$id";
         $result = $this->connect()->query($sql);
         return $result->fetchAll();
         exit();
