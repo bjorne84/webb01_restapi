@@ -30,7 +30,7 @@ class PostController extends CheckInputController
         } else if ($table === 'courses') {
             //$result = $this->getAllCourses();
             $result = $this->nestedCourse();
-            //return $result;
+            return $result;
             exit();
         } else if ($table === 'courseslang'){
             $result = $this->getLanguages($id);
@@ -65,19 +65,15 @@ class PostController extends CheckInputController
             $idsend = $course['Course_ID'];
             $languages = $this->getLanguages($idsend);
             
+            //Tilldelar key
             $item['languages'] = $languages;
             $merge = array_merge($course, $item);
-            
+            // var tungen ha key tilldelad för att få
             array_push($newArr, $merge);
             
-            //$merge = array_merge($course, $languages);
-            //  echo json_encode($merge, JSON_PRETTY_PRINT);
-            //return $merge;
-            //$newArr[$merge];
-            //var_dump($merge);
         }
-        //var_dump($newArr);
-        echo json_encode($newArr, JSON_PRETTY_PRINT);
+        
+        return $newArr;
     }
     // method to get id_type
     protected function getId_type($table)

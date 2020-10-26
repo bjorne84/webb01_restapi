@@ -31,17 +31,17 @@ class CheckInputController extends PostModel
         }
 
         // Points max 15 characters
-        if (mb_strlen($cData['Indata']['Points']) >= 15) {
+        if (mb_strlen($cData['Indata']['Points']) >= 14) {
             http_response_code(400); //400 Bad Request
-            $errorMsg = ["message" => "Points can be max 100 characters"];
+            $errorMsg = ["message" => "Points can be max 15 characters"];
             return $errorMsg;
             exit();
         }
 
         // Grade max 15 characters
-        if (mb_strlen($cData['Indata']['Grade']) >= 5) {
+        if (mb_strlen($cData['Indata']['Grade']) >= 6) {
             http_response_code(400); //400 Bad Request
-            $errorMsg = ["message" => "Points can be max 5 characters"];
+            $errorMsg = ["message" => "Grade can be max 5 characters"];
             return $errorMsg;
             exit();
         }
