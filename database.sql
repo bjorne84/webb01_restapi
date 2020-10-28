@@ -24,6 +24,7 @@ CREATE TABLE `work_experience` (
   `Enddate` DATE
 );
 
+
 CREATE TABLE `portfolio` (
   `Portfolio_ID` INT(11),
   `Titel` VARCHAR(200) NOT NULL,

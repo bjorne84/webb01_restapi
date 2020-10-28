@@ -24,6 +24,21 @@ class PostModel extends Dbc
         exit();
     }
 
+       // Gets the languages for a specific course from portions
+       protected function getLanguagesPort($id)
+       {
+           $sql = "SELECT language.Language_ID, language.Language, language.Img_url
+           FROM language 
+           INNER JOIN bridge_portfolio_language
+           ON bridge_portfolio_language.Language_ID=language.Language_ID
+           WHERE bridge_portfolio_language.Portfolio_ID=$id";
+           $result = $this->connect()->query($sql);
+           return $result->fetchAll();
+           exit();
+       }
+   
+
+
     // Gets all courses including education/scholl
     protected function getCoursesAndEducation()
     {
@@ -45,6 +60,15 @@ class PostModel extends Dbc
         return $result->fetchAll();
         exit();
     }
+
+       // Get one course, type in onecourses in url
+       protected function getOneCourse($id)
+       {
+           $sql = "SELECT * FROM courses WHERE Course_ID=$id";
+           $result = $this->connect()->query($sql);
+           return $result->fetchAll();
+           exit();
+       }
 
     // When you want to get all the courses from the education/school
     protected function getCoursesByType($table, $id)

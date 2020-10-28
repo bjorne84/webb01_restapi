@@ -27,12 +27,22 @@ class PostController extends CheckInputController
             $result = $this->getCoursesByType($table, $id);
             return $result;
             exit();
-        } else if ($table === 'courses') {
+        } else if ($table === 'onecourse') {
+            $result = $this->getOneCourse($id);
+            return $result;
+            exit();
+        }
+        else if ($table === 'courses') {
             //$result = $this->getAllCourses();
             $result = $this->nestedCourse();
             return $result;
             exit();
-        } else if ($table === 'courseslang'){
+        } else if($table = 'portions') {
+            $result = $this->nestedPortfolio();
+            return $result;
+            exit();
+        } 
+        else if ($table === 'courseslang'){
             $result = $this->getLanguages($id);
             return $result;
             exit();
@@ -55,7 +65,7 @@ class PostController extends CheckInputController
         }
     }
 
-    // metod ej klar, tänkt att användas för att nästla en array i en assosiativ
+    // nästlar ihop två queries i json
     protected function nestedCourse()
     {
         $courses = $this->getAllCourses();
@@ -75,6 +85,30 @@ class PostController extends CheckInputController
         
         return $newArr;
     }
+
+    protected function nestedPortfolio()
+    {
+        // first collect all portfolio data
+        $table = "portfolio";
+        $portfolio = $this->getAllData($table);
+        //var_dump($portfolio);
+        $newArr = [];
+        foreach ($portfolio as $project) {
+            $idsend = $project['Portfolio_ID'];
+            $languages = $this->getLanguagesPort($idsend);
+            
+            //Tilldelar key
+            $item['languages'] = $languages;
+            $merge = array_merge($project, $item);
+            // var tungen ha key tilldelad för att få
+            array_push($newArr, $merge);
+            
+        }
+        
+        return $newArr;
+    }
+
+
     // method to get id_type
     protected function getId_type($table)
     {
