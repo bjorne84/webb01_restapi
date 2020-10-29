@@ -37,7 +37,7 @@ class PostController extends CheckInputController
             $result = $this->nestedCourse();
             return $result;
             exit();
-        } else if($table = 'portions') {
+        } else if($table === 'portfolio') {
             $result = $this->nestedPortfolio();
             return $result;
             exit();
