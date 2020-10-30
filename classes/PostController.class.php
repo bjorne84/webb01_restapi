@@ -32,12 +32,12 @@ class PostController extends CheckInputController
             return $result;
             exit();
         }
-        else if ($table === 'courses') {
+        else if ($table === 'courses')  {
             //$result = $this->getAllCourses();
             $result = $this->nestedCourse();
             return $result;
             exit();
-        } else if($table === 'portfolio') {
+        } else if(($table === 'portfolio') && empty($id)) {
             $result = $this->nestedPortfolio();
             return $result;
             exit();
