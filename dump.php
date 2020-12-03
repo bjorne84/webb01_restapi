@@ -1,4 +1,5 @@
 <?php
+/*
 protected function courses($cData, $case, $check) {
         // initiate class for the input controll of data to match what the database accept
         $check = new CheckInputController();

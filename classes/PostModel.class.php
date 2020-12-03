@@ -39,7 +39,7 @@ class PostModel extends Dbc
    
 
 
-    // Gets all courses including education/scholl
+    // Gets all courses including education/school
     protected function getCoursesAndEducation()
     {
         $sql = "SELECT courses.*,education.Programme, education.School
@@ -89,7 +89,7 @@ class PostModel extends Dbc
     }
 
 
-    // SET NEW DATA IN DATANBASE
+    // SET NEW DATA IN DATABASE
     protected function setCourse($cData)
     {
         // If there is no languages data, just run the setJustCourse method

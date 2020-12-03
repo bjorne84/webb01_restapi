@@ -101,10 +101,8 @@ class PostController extends CheckInputController
             $item['languages'] = $languages;
             $merge = array_merge($project, $item);
             // var tungen ha key tilldelad för att få
-            array_push($newArr, $merge);
-            
-        }
-        
+            array_push($newArr, $merge);   
+        }  
         return $newArr;
     }
 
@@ -188,7 +186,7 @@ class PostController extends CheckInputController
 
     protected function courses($cData, $case, $check)
     {
-        // initiate class for the input controll of data to match what the database accept
+       
         // Check if delete is set
         if ($case === "delete") {
             // Create variables
@@ -263,7 +261,6 @@ class PostController extends CheckInputController
     // method for table: portfolio
     protected function portfolio($cData, $case, $check)
     {
-        // initiate class for the input controll of data to match what the database accept
         // Check if delete is set
         if ($case === "delete") {
             // Create variables
@@ -336,7 +333,6 @@ class PostController extends CheckInputController
     // method for table: work_experience
     protected function workExperience($cData, $case, $check)
     {
-        // initiate class for the input controll of data to match what the database accept
         // Check if delete is set
         if ($case === "delete") {
             // Create variables
