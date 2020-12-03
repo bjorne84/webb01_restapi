@@ -3,7 +3,7 @@
 ## Overview
 A RestAPI with portfoliodata, with HTTP-METHODS:  
 GET, POST, PUT and DELETE you can access and retrive data from the mysql-database and get it in JSON-format.
-
+ 
 ### GET
 You can access data from the these tables:  
 - courses, se which courses I have taken and from what school etc. Languages: https://webb01.se/restapi/?table=language 
@@ -29,4 +29,28 @@ you can add a new post to each table. The correct format:
     "Grade": "C",
     "Languages_id": [2, 3,]
   }
+}
+
+### PUT
+By sending a json-file with the HTTP-method post to url: https://webb01.se/restapi  
+You can update data fromeach table, The correct format: 
+{
+    "Table": "courses",
+    "Id_push": 8,
+	"Indata": {
+		"Education_ID": 2,
+		"CourseName": "Lörsdag två uppdaterad med språkdata",
+		"Points": "7,5 HP",
+		"Grade": "C",
+		"Languages_id": [2, 3, 2]
+	}
+}
+
+### DELETE
+By sending a json-file with the HTTP-method post to url: https://webb01.se/restapi  
+You can delete form each table, The correct format: 
+{
+    "Table": "courses",
+    "Id_type": "Course_ID",
+    "Id_push": 11
 }
